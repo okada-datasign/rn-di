@@ -1,5 +1,9 @@
-import { PdsDataGetUsecase } from './usecases/PdsData/get';
+import { injectable, inject } from "inversify";
+import { UserUsecases } from './domain/usecases';
+import TYPES from './Types';
 
-export interface Application {
-  PdsDataGet: PdsDataGetUsecase;
+@injectable()
+export class Application {
+  @inject(TYPES.UserUsecases) private _userUsecase: UserUsecases;
+  usrUsecases(): UserUsecases { return this._userUsecase; }
 }

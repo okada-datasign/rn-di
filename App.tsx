@@ -2,39 +2,25 @@ import "reflect-metadata";
 import React, { useContext, createContext, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 
+
 import { AppContext } from './AppContext';
-import { Application } from './application/application';
-import { PdsDataGetInteractor } from './application/interactors/PdsData/get';
-import { SamplePdsDataRepository } from './application/infrastracture/sample/SamplePdsDataRepository';
+import { Application } from './application/Application';
+import { ApplicationContainer } from './application/Container';
+import TYPES from './application/Types';
+import { ApplicationContext } from './ApplicationContext';
 
-import { PdsDataView } from './PdsDataView';
+import { UserListScreen } from './screens/UserListScreen';
 
-import { FooApplication, FooAppContext, User, TYPES } from './FooApplication';
-import { FooView } from './FooView';
-import { container } from './inversity.config';
-
-const pdsDataRepository = new SamplePdsDataRepository();
-const pdsDataGetInteractor = new PdsDataGetInteractor(pdsDataRepository);
-const app: Application = {
-  PdsDataGet: pdsDataGetInteractor,
-};
-
-const fooApplication = container.get<FooApplication>(TYPES.Application);
-
+const application = ApplicationContainer.get<Application>(TYPES.Application);
+ 
 export default function App() {
-  const [user, setUser] = useState<User>(new User());
-
   return (
-    <AppContext.Provider value={app}>
-      <FooAppContext.Provider value={fooApplication}>
-      <SafeAreaView />
-        <View style={styles.container}>
-          {/* <Text>Open up App.tsx to start working on your app!</Text> */}
-          {/* <PdsDataView /> */}
-          <FooView />
-        </View>
-      </FooAppContext.Provider>
-    </AppContext.Provider>
+    <ApplicationContext.Provider value={application}>
+    <SafeAreaView />
+      <View style={styles.container}>
+        <UserListScreen />
+      </View>
+    </ApplicationContext.Provider>
   );
 }
 
@@ -42,7 +28,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 });
